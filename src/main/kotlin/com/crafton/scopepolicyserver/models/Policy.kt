@@ -1,4 +1,11 @@
 package com.crafton.scopepolicyserver.models
 
-class Policy {
-}
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Document
+data class Policy(
+        @Id val id: String,
+        val path: String,
+        val scopes: List<Scope>,
+        val httpActions: List<HttpAction>)
