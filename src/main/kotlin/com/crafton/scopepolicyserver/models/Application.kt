@@ -8,10 +8,11 @@ import java.time.LocalDateTime
 
 @Document
 data class Application(
-        @Id val id: String,
+        @Id val id: String?,
         val name: String,
-        val description: String,
-        val baseUrl: String,
-        val policies: List<Policy>,
-        @CreatedDate val dateCreated: LocalDateTime,
-        @LastModifiedDate val lastUpdated: LocalDateTime )
+        var description: String,
+        var baseUrl: String,
+        val policies: MutableList<Policy>,
+        @CreatedDate val dateCreated: LocalDateTime?,
+        @LastModifiedDate val lastUpdated: LocalDateTime?
+)

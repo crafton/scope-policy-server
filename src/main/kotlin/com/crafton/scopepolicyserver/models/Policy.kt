@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 
 @Document
 data class Policy(
-        @Id val id: String,
-        val path: String,
-        val scopes: List<Scope>,
-        val httpActions: List<HttpAction>,
-        @CreatedDate val dateCreated: LocalDateTime,
-        @LastModifiedDate val lastUpdated: LocalDateTime
-        )
+        @Id val id: String?,
+        var path: String,
+        val scopes: MutableList<Scope>,
+        val httpActions: MutableList<HttpAction>,
+        @CreatedDate val dateCreated: LocalDateTime?,
+        @LastModifiedDate val lastUpdated: LocalDateTime?
+)

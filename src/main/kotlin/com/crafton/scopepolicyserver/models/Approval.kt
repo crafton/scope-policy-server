@@ -8,11 +8,11 @@ import java.time.LocalDateTime
 
 @Document
 data class Approval (
-        @Id val id: String,
+        @Id val id: String?,
         val application: Application,
         val policy: Policy,
         val approved: Boolean,
         val approvedBy: String,
-        @CreatedDate val dateCreated: LocalDateTime,
-        @LastModifiedDate val lastUpdated: LocalDateTime
+        @CreatedDate val dateCreated: LocalDateTime?,
+        @LastModifiedDate val lastUpdated: LocalDateTime?
 )

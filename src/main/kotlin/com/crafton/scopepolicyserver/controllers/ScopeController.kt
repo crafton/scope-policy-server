@@ -1,10 +1,9 @@
 package com.crafton.scopepolicyserver.controllers
 
+import com.crafton.scopepolicyserver.models.Scope
 import com.crafton.scopepolicyserver.repositories.ScopeRepository
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ScopeController(private val scopeRepository: ScopeRepository) {
@@ -15,6 +14,18 @@ class ScopeController(private val scopeRepository: ScopeRepository) {
     @GetMapping("/scopes/{id}")
     fun findScope(@PathVariable("id") scopeId: String) = scopeRepository.findById(scopeId)
             .map { ResponseEntity.ok(it) }
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+
+    @PostMapping("/scopes")
+    fun addScope(@RequestBody scope: Scope) = scopeRepository.save(scope)
+
+    @PutMapping("/scopes/{id}")
+    fun updateScope(@PathVariable("id") scopeId: String, @RequestBody scope: Scope) = scopeRepository.findById(scopeId)
+            .flatMap { existingScope ->
+                existingScope.name = scope.name
+                existingScope.description = scope.description
+                scopeRepository.save(existingScope)
+            }.map { updatedScope -> ResponseEntity.ok(updatedScope) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 
 }
