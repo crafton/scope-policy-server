@@ -19,7 +19,7 @@ class ScopeController(private val scopeRepository: ScopeRepository) {
             .defaultIfEmpty(ResponseEntity.notFound().build())
 
     @PostMapping("/scopes")
-    fun addScope(@RequestBody scope: Scope) = scopeRepository.save(scope)
+    fun createScope(@RequestBody scope: Scope) = scopeRepository.save(scope)
 
     @PutMapping("/scopes/{id}")
     fun updateScope(@PathVariable("id") scopeId: String, @RequestBody scope: Scope) = scopeRepository.findById(scopeId)
@@ -34,8 +34,8 @@ class ScopeController(private val scopeRepository: ScopeRepository) {
     fun deleteScope(@PathVariable("id") scopeId: String) = scopeRepository.findById(scopeId)
             .flatMap { existingScope ->
                 scopeRepository.delete(existingScope)
-                        .then(Mono.just(ResponseEntity.noContent()))
+                        .then(Mono.just(ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
             }
-            .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND))
+            .defaultIfEmpty(ResponseEntity.notFound().build())
 
 }
