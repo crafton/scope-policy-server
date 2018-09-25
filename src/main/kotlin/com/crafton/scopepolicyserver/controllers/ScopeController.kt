@@ -2,8 +2,10 @@ package com.crafton.scopepolicyserver.controllers
 
 import com.crafton.scopepolicyserver.models.Scope
 import com.crafton.scopepolicyserver.repositories.ScopeRepository
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Mono
 
 @RestController
 class ScopeController(private val scopeRepository: ScopeRepository) {
@@ -27,5 +29,13 @@ class ScopeController(private val scopeRepository: ScopeRepository) {
                 scopeRepository.save(existingScope)
             }.map { updatedScope -> ResponseEntity.ok(updatedScope) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
+
+    @DeleteMapping("/scopes/{id}")
+    fun deleteScope(@PathVariable("id") scopeId: String) = scopeRepository.findById(scopeId)
+            .flatMap { existingScope ->
+                scopeRepository.delete(existingScope)
+                        .then(Mono.just(ResponseEntity.noContent()))
+            }
+            .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND))
 
 }
