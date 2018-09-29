@@ -3,6 +3,7 @@ package com.crafton.scopepolicyserver.models
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedDate
+import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime
 data class Policy(
         @Id val id: String?,
         var path: String,
+        @DBRef
         var scopes: MutableSet<Scope>,
         var httpActions: MutableSet<HttpAction>,
         @CreatedDate val dateCreated: LocalDateTime?,

@@ -1,5 +1,6 @@
 package com.crafton.scopepolicyserver.controllers
 
+import com.crafton.scopepolicyserver.models.HttpAction
 import com.crafton.scopepolicyserver.models.Policy
 import com.crafton.scopepolicyserver.models.Scope
 import com.crafton.scopepolicyserver.repositories.PolicyRepository
@@ -15,8 +16,7 @@ class PolicyController(private val policyRepository: PolicyRepository) {
     fun findAllPolicies() = policyRepository.findAll()
 
     @GetMapping("/policies/{id}")
-    fun findPolicy(@PathVariable("id") policyId: String)
-            = policyRepository.findById(policyId)
+    fun findPolicy(@PathVariable("id") policyId: String) = policyRepository.findById(policyId)
             .map { ResponseEntity.ok(it) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 
@@ -24,8 +24,7 @@ class PolicyController(private val policyRepository: PolicyRepository) {
     fun createPolicy(@RequestBody policy: Policy) = policyRepository.save(policy)
 
     @PutMapping("/policies/{id}")
-    fun updatePolicy(@PathVariable("id") policyId: String, @RequestBody policy: Policy)
-            = policyRepository.findById(policyId)
+    fun updatePolicy(@PathVariable("id") policyId: String, @RequestBody policy: Policy) = policyRepository.findById(policyId)
             .flatMap { existingPolicy ->
                 existingPolicy.path = policy.path
                 existingPolicy.scopes = policy.scopes
@@ -34,18 +33,24 @@ class PolicyController(private val policyRepository: PolicyRepository) {
             }.map { ResponseEntity.ok(it) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 
-    @PatchMapping("/policies/{id}")
-    fun addScopeToPolicy(@PathVariable("id") policyId: String, @RequestBody scope: Scope)
-            = policyRepository.findById(policyId)
+    @PatchMapping("/policies/{id}/scope")
+    fun addScopeToPolicy(@PathVariable("id") policyId: String, @RequestBody scope: Scope) = policyRepository.findById(policyId)
             .flatMap { existingPolicy ->
                 existingPolicy.scopes.add(scope)
                 policyRepository.save(existingPolicy)
             }.map { ResponseEntity.ok(it) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 
+    @PatchMapping("/policies/{id}/action")
+    fun addActionToPolicy(@PathVariable("id") policyId: String, @RequestBody httpAction: HttpAction) = policyRepository.findById(policyId)
+            .flatMap { existingPolicy ->
+                existingPolicy.httpActions.add(httpAction)
+                policyRepository.save(existingPolicy)
+            }.map { ResponseEntity.ok(it) }
+            .defaultIfEmpty(ResponseEntity.notFound().build())
+
     @DeleteMapping("/policies/{id}")
-    fun deletePolicy(@PathVariable("id") policyId: String)
-            = policyRepository.findById(policyId)
+    fun deletePolicy(@PathVariable("id") policyId: String) = policyRepository.findById(policyId)
             .flatMap { existingPolicy ->
                 policyRepository.delete(existingPolicy)
                         .then(Mono.just(ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
