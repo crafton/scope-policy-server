@@ -27,7 +27,7 @@ class ScopeController(private val scopeRepository: ScopeRepository) {
                 existingScope.name = scope.name
                 existingScope.description = scope.description
                 scopeRepository.save(existingScope)
-            }.map { updatedScope -> ResponseEntity.ok(updatedScope) }
+            }.map { ResponseEntity.ok(it) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 
     @DeleteMapping("/scopes/{id}")
@@ -35,7 +35,5 @@ class ScopeController(private val scopeRepository: ScopeRepository) {
             .flatMap { existingScope ->
                 scopeRepository.delete(existingScope)
                         .then(Mono.just(ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
-            }
-            .defaultIfEmpty(ResponseEntity.notFound().build())
-
+            }.defaultIfEmpty(ResponseEntity.notFound().build())
 }
