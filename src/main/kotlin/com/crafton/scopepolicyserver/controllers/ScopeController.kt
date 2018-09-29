@@ -11,10 +11,10 @@ import reactor.core.publisher.Mono
 class ScopeController(private val scopeRepository: ScopeRepository) {
 
     @GetMapping("/scopes")
-    fun findAllScopes() = scopeRepository.findAll()
+    fun getAllScopes() = scopeRepository.findAll()
 
     @GetMapping("/scopes/{id}")
-    fun findScope(@PathVariable("id") scopeId: String) = scopeRepository.findById(scopeId)
+    fun getScope(@PathVariable("id") scopeId: String) = scopeRepository.findById(scopeId)
             .map { ResponseEntity.ok(it) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 

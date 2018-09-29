@@ -13,10 +13,10 @@ import reactor.core.publisher.Mono
 class PolicyController(private val policyRepository: PolicyRepository) {
 
     @GetMapping("/policies")
-    fun findAllPolicies() = policyRepository.findAll()
+    fun getAllPolicies() = policyRepository.findAll()
 
     @GetMapping("/policies/{id}")
-    fun findPolicy(@PathVariable("id") policyId: String) = policyRepository.findById(policyId)
+    fun getPolicy(@PathVariable("id") policyId: String) = policyRepository.findById(policyId)
             .map { ResponseEntity.ok(it) }
             .defaultIfEmpty(ResponseEntity.notFound().build())
 

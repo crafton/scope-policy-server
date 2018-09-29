@@ -11,11 +11,10 @@ import java.time.LocalDateTime
 @Document
 data class Application(
         @Id val id: String?,
-        @Indexed(unique = true) val name: String,
-        var description: String,
-        var baseUrl: String,
-        @DBRef
-        val policies: MutableSet<Policy>,
+        @Indexed(unique = true) var name: String?,
+        var description: String?,
+        var baseUrl: String?,
+        @DBRef var policies: MutableSet<Policy>?,
         @CreatedDate val dateCreated: LocalDateTime?,
         @LastModifiedDate val lastUpdated: LocalDateTime?
 )
