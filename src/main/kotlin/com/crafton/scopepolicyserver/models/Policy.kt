@@ -15,6 +15,7 @@ data class Policy(
         var path: String,
         @DBRef var scopes: MutableSet<Scope>,
         var httpActions: MutableSet<HttpAction>,
+        val createdBy: String?,
         @CreatedDate val dateCreated: LocalDateTime?,
         @LastModifiedDate val lastUpdated: LocalDateTime?
 )
