@@ -15,6 +15,7 @@ data class Application(
         var description: String?,
         var baseUrl: String?,
         @DBRef var policies: MutableSet<Policy>?,
+        val owner: String?,
         @CreatedDate val dateCreated: LocalDateTime?,
         @LastModifiedDate val lastUpdated: LocalDateTime?
 )
